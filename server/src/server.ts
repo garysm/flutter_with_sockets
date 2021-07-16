@@ -14,27 +14,27 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws: WebSocket, request: http.IncomingMessage) => {
     ws.onopen = function(event: WebSocket.OpenEvent) {
-        console.log('connection open');
+        console.log('Connection open');
     };
 
-    //Handle incoming messages
+    //handle incoming messages
     ws.onmessage = function(event: WebSocket.MessageEvent)  {
 
         //log the received message and send it back to the client
-        console.log('received: %s', event.data);
+        console.log('Received: %s', event.data);
         ws.send(`You sent: ${event.data}`);
     };
 
     ws.onerror = function(event: WebSocket.ErrorEvent) {
-        console.log('error: %s', event.error);
+        console.log('Error: %s', event.error);
     };
 
     ws.onclose = function(event: WebSocket.CloseEvent) {
-        console.log('connection closed');
+        console.log('Connection closed');
     };
 
     //log and send a message to the new connection
-    console.log('new connection from %s', request.socket.remoteAddress);    
+    console.log('New connection from %s', request.socket.remoteAddress);    
     ws.send('I am the server');
 });
 
