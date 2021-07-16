@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as http from 'http';
+import { createServer, IncomingMessage } from 'http';
 import * as WebSocket from 'ws';
 
 const PORT = process.env.PORT || 3000;
@@ -7,12 +7,12 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 //initialize a simple http server
-const server = http.createServer(app);
+const server = createServer(app);
 
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', (ws: WebSocket, request: http.IncomingMessage) => {
+wss.on('connection', (ws: WebSocket, request: IncomingMessage) => {
     ws.onopen = function(event: WebSocket.OpenEvent) {
         console.log('Connection open');
     };
