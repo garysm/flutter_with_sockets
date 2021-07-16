@@ -1,5 +1,5 @@
 # flutter_with_sockets
-WebSockets with a Flutter client
+WebSocket server with a Flutter client
 
 ## Setup
 Run in server folder
