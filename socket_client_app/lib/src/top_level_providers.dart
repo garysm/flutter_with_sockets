@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -15,8 +17,27 @@ final _channelProvider = Provider.autoDispose<IOWebSocketChannel>((ref) {
 final channelStreamProvider =
     StreamProvider.autoDispose((ref) => ref.watch(_channelProvider).stream);
 
-/// Send data to the channel sink
-final addToSinkProvider = Provider.autoDispose.family<void, dynamic>((ref, data) {
+final channelServiceProvider = Provider.autoDispose<ChannelService>((ref) {
   final channel = ref.watch(_channelProvider);
-  return channel.sink.add(data);
+  return ChannelService(channel);
 });
+
+class ChannelService {
+  final IOWebSocketChannel _channel;
+
+  ChannelService(this._channel);
+
+  /// Sends a "plus" action to the websocket server
+  void plus() {
+    final data = {"action": "plus"};
+    final json = jsonEncode(data);
+    return _channel.sink.add(json);
+  }
+
+  /// Sends a "minus" action to the websocket server
+  void minus() {
+    final data = {"action": "minus"};
+    final json = jsonEncode(data);
+    return _channel.sink.add(json);
+  }
+}
