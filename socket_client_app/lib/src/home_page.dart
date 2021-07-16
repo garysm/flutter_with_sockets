@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:socket_client_app/top_level_providers.dart';
+import 'package:socket_client_app/src/top_level_providers.dart';
 import 'package:web_socket_channel/io.dart';
 
 class HomePage extends HookWidget {
