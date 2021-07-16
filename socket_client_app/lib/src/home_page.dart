@@ -9,24 +9,30 @@ class HomePage extends HookWidget {
     final TextEditingController _controller = useTextEditingController();
     final _channelStream = useProvider(channelStreamProvider);
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Form(
-              child: TextFormField(
-                controller: _controller,
-                decoration: InputDecoration(labelText: 'Send a message'),
-              ),
-            ),
-            SizedBox(height: 24),
-            _channelStream.when(
-              data: (data) => Text('$data'),
-              loading: () => Text('No Data'),
-              error: (obj, stack) => Text('$obj'),
-            ),
-          ],
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: _channelStream.when(
+          data: (data) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Form(
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: InputDecoration(labelText: 'Send a message'),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text('$data')
+              ],
+            );
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, stack) => Center(
+            child: Text('Error: $error'),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
