@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# WS server example that synchronizes state across clients
+# This example server comes from the websockets docs
 
 import asyncio
 import json
