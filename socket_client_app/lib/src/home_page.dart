@@ -15,7 +15,7 @@ class HomePage extends HookWidget {
           padding: EdgeInsets.all(20),
           child: _channelStream.when(
             data: (data) {
-              final int count = jsonDecode(data)['value'];
+              final int count = jsonDecode('$data')['value'] as int;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
