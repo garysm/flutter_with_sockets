@@ -4,6 +4,7 @@ WebSocket server with a Flutter client
 ## Setup
 Run in server folder
 ```console
+npm i
 tsc
 node dist/server.js
 ```
