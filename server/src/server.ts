@@ -35,7 +35,7 @@ wss.on('connection', (ws: WebSocket, request: http.IncomingMessage) => {
 
     //log and send a message to the new connection
     console.log('new connection from %s', request.socket.remoteAddress);    
-    ws.send('Hi there, I am a WebSocket server');
+    ws.send('I am the server');
 });
 
 //start server
