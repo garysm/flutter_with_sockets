@@ -22,9 +22,7 @@ class HomePage extends HookWidget {
             ),
             SizedBox(height: 24),
             _channelStream.when(
-              data: (data) {
-                return Text('$data');
-              },
+              data: (data) => Text('$data'),
               loading: () => Text('No Data'),
               error: (obj, stack) => Text('$obj'),
             ),
