@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:socket_client_app/src/top_level_providers.dart';
-import 'package:web_socket_channel/io.dart';
 
 class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _controller = useTextEditingController();
-    final IOWebSocketChannel _channel = useProvider(channelProvider);
     final _channelStream = useProvider(channelStreamProvider);
     return Scaffold(
       body: Padding(
@@ -34,18 +32,15 @@ class HomePage extends HookWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            _sendMessage(text: _controller.text, channel: _channel),
+        onPressed: () {
+          final text = _controller.text;
+          if (text.isNotEmpty) {
+            return context.read(addToSinkProvider(text));
+          }
+        },
         tooltip: 'Send message',
         child: Icon(Icons.send),
       ),
     );
-  }
-
-  void _sendMessage(
-      {required String text, required IOWebSocketChannel channel}) {
-    if (text.isNotEmpty) {
-      channel.sink.add(text);
-    }
   }
 }
