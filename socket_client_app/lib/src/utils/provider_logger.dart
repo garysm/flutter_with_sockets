@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class ProviderLogger extends ProviderObserver {
   // Prints to console whenever there is a new provider.
   @override
-  void didAddProvider(ProviderBase provider, Object? newValue) {
+  void didAddProvider(ProviderBase<dynamic, dynamic> provider, Object? newValue) {
     print('''
 New Provider:
 {
@@ -14,7 +14,7 @@ New Provider:
 
   // Prints to console whenever any providers change their state.
   @override
-  void didUpdateProvider(ProviderBase provider, Object? newValue) {
+  void didUpdateProvider(ProviderBase<dynamic, dynamic> provider, Object? newValue) {
     print('''
 Updated Provider Value:
 {
@@ -25,7 +25,7 @@ Updated Provider Value:
 
   // Prints to console whenever any providers are disposed.
   @override
-  void didDisposeProvider(ProviderBase provider) {
+  void didDisposeProvider(ProviderBase<dynamic, dynamic> provider) {
     print('''
 Disposed Provider:
 {

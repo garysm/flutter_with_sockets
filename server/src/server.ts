@@ -4,6 +4,8 @@ import * as WebSocket from 'ws';
 
 const PORT = process.env.PORT || 3000;
 
+var message_list: string[] = [];
+
 const app = express();
 
 //initialize a simple http server
@@ -22,7 +24,9 @@ wss.on('connection', (ws: WebSocket, request: IncomingMessage) => {
 
         //log the received message and send it back to the client
         console.log('Received: %s', event.data);
-        ws.send(`You sent: ${event.data}`);
+        message_list.push(`From You: ${event.data}`);
+        console.log(message_list);
+        ws.send(JSON.stringify(message_list));
     };
 
     ws.onerror = function(event: WebSocket.ErrorEvent) {
@@ -35,7 +39,8 @@ wss.on('connection', (ws: WebSocket, request: IncomingMessage) => {
 
     //log and send a message to the new connection
     console.log('New connection from %s', request.socket.remoteAddress);    
-    ws.send('I am the server');
+    message_list.push('From the server: I am the server');
+    ws.send(JSON.stringify(message_list));
 });
 
 //start server
