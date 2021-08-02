@@ -1,21 +1,43 @@
 
 import {
-    SubscribeMessage,
-    WebSocketGateway,
-    WebSocketServer,
-    WsResponse,
-  } from '@nestjs/websockets';
-  import { from, Observable } from 'rxjs';
-  import { map } from 'rxjs/operators';
-  import { Server } from 'ws';
-  
-  @WebSocketGateway(8080)
-  export class EventsGateway {
-    @WebSocketServer()
-    server: Server;
-  
-    @SubscribeMessage('events')
-    onEvent(client: any, data: any): Observable<WsResponse<number>> {
-      return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
-    }
+  WebSocketGateway,
+  WebSocketServer,
+  OnGatewayInit,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
+import WebSocket, { Server } from 'ws';
+
+@WebSocketGateway(8080)
+export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  @WebSocketServer()
+  server: Server;
+
+  messageList: Array<string> = [];
+
+  afterInit(server: any) {
+    console.log('Initialized');
   }
+
+  // TODO: Optimize this, try to emit list of messages to every client
+  // instead of sending them individually
+  handleConnection(client: WebSocket, ...args: any[]) {
+    let connectionMessage = 'New Client Connected';
+    console.log(connectionMessage);
+    this.messageList.push(connectionMessage);
+    this.server.clients.forEach(serverClient => {
+      serverClient.send(JSON.stringify(this.messageList));
+    })
+    client.on('message', (message: string) => {
+      console.log(`Client Message: ${message}`);
+      this.messageList.push(message);
+      this.server.clients.forEach(client => {
+        client.send(JSON.stringify(this.messageList));
+      });
+    })
+  }
+
+  handleDisconnect(client: any) {
+    console.log('Client Disconnected');
+  }
+}
