@@ -4,7 +4,7 @@ WebSocket server with a Flutter client
 ## Setup
 Start server
 ```console
-cd server\socket-server
+cd server/socket-server
 npm run start
 ```
 Start client app
